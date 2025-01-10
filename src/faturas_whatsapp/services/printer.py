@@ -1,11 +1,7 @@
 from services.downloader import InvoiceDownloader
 
-def print_invoice(unit_consumption, cpf, date_birth):
-    downloader = InvoiceDownloader()
-    try:
-        downloader = InvoiceDownloader()
-        total_to_pay  = downloader.get_invoice_details(unit_consumption, cpf, date_birth)
-        
+def print_invoice(total_to_pay):
+    try:        
         print("-----------------------------")
         print(f'R$ {float(total_to_pay.replace(",", ".")):.2f}')
         print("Fatura impressa com sucesso!")
