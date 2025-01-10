@@ -1,18 +1,17 @@
-from selenium import webdriver
-from selenium.webdriver.common.by import By
-from selenium.webdriver.chrome.service import Service
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver.common.keys import Keys  
-import time
-import fitz  
-import re
-import requests
+from services.printer import print_invoice
+from dotenv import load_dotenv
+import os
 
-# Configuração do ChromeDriver
-options = webdriver.ChromeOptions()
-# options.add_argument("--headless")  # Rodar com interface gráfica para depuração
-options.add_argument("--no-sandbox")
-options.add_argument("--disable-dev-shm-usage")
+load_dotenv()
 
-service = Service("/usr/bin/chromedriver")
+if __name__ == "__main__": 
+    unit_consumption = os.getenv('UNIT_CONSUMPTION')
+    # unit_consumption = input('Digite a unidade consumidora (Ex.: 1234566789): ')
+
+    cpf = os.getenv('CPF')
+    # cpf = input('Digite o CPF (Ex.: 000000000-00): ')
+    
+    date_birth = os.getenv('DATE_BIRTH')
+    # date_birth = input('Digite a data de nascimento (Ex.: DD/MM/AAAA): ')
+
+    print_invoice(unit_consumption, cpf, date_birth)
