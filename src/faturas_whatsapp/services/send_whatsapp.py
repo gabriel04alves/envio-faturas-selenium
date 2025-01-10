@@ -6,7 +6,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 import time
 
-def send_invoice(contact_name, total_to_pay):
+def send_invoice(contact_name, holder, address, consumer_unit, month, total_to_pay):
     driver = webdriver.Chrome()  
     driver.get("https://web.whatsapp.com/")
     print("Escaneie o QR code para fazer login...")
@@ -21,7 +21,7 @@ def send_invoice(contact_name, total_to_pay):
         contact_element.click()  
         print(f"Contato {contact_name} encontrado.")
 
-        messages = [f"Olá, {contact_name}! Sua fatura está disponível da Celesc está disponível:", f"Total a pagar: R$ {total_to_pay}"]
+        messages = [f"Olá, *{contact_name}*!", f"A fatura de *{holder}* na *CELESC* está disponível", f"A cobrança é referente ao mês *{month}* no endereço *{address}*, unidade consumidora *{consumer_unit}*.", f"O total a pagar é *R${total_to_pay}*."]
 
         message_box = WebDriverWait(driver, 30).until(
             EC.presence_of_element_located((By.XPATH, '//div[@contenteditable="true" and @data-tab="10"]')) # Local do input de mensagem 
@@ -30,7 +30,6 @@ def send_invoice(contact_name, total_to_pay):
         def send_message(message):
             print(f"Tentando enviar mensagem.")
             message_box.click()
-            time.sleep(1) 
             message_box.send_keys(message)  
             time.sleep(1) 
             message_box.send_keys(Keys.ENTER)  

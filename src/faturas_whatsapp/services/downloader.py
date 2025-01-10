@@ -1,5 +1,4 @@
 from services.web_driver import create_driver
-from services.pdf_extractor import *
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.ui import WebDriverWait
@@ -11,7 +10,7 @@ class InvoiceDownloader:
     def __init__(self):
         self.driver = create_driver()
 
-    def get_invoice_details(self, unit_consumption, cpf, date_birth):
+    def get_invoice(self, unit_consumption, cpf, date_birth):
         try:
             print("Acessando o site...")
             self.driver.get("https://celchatbotcom.celesc.com.br/")
@@ -44,14 +43,14 @@ class InvoiceDownloader:
             time.sleep(2)
 
             print("Aguardando o botão de seleção da primeira fatura em aberto...")
-            fatura_radio = WebDriverWait(self.driver, 20).until(
+            fatura_radio = WebDriverWait(self.driver, 40).until(
                 EC.element_to_be_clickable((By.CSS_SELECTOR, 'input[type="radio"]'))
             )
             fatura_radio.click()
             print("Fatura selecionada.")
 
             print("Aguardando o botão de download...")
-            link_element = WebDriverWait(self.driver, 20).until(
+            link_element = WebDriverWait(self.driver, 40).until(
                 EC.element_to_be_clickable((By.CSS_SELECTOR, 'a[target="_blank"]'))
             )
             link_element.click()
@@ -65,9 +64,12 @@ class InvoiceDownloader:
             pdf_path = "invoice_downloaded.pdf"
             with open(pdf_path, "wb") as f:
                 f.write(response.content)
-
-            total_to_pay = extract_total_to_pay(pdf_path)
-
-            return total_to_pay
+            
+            return pdf_path 
+        
+        except Exception as e:
+            print(f"Erro ao obter detalhes da fatura: {e}")
+            raise
+        
         finally:
             self.driver.quit()

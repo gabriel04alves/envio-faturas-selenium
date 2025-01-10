@@ -1,4 +1,4 @@
-from services.downloader import InvoiceDownloader
+from services.pdf_extractor import InvoiceExtractor
 from services.printer import print_invoice
 from services.send_whatsapp import send_invoice
 from dotenv import load_dotenv
@@ -17,22 +17,16 @@ if __name__ == "__main__":
     date_birth = os.getenv('DATE_BIRTH')
     # date_birth = input('Digite a data de nascimento (Ex.: DD/MM/AAAA): ')
 
-    get_invoice_details = InvoiceDownloader().get_invoice_details(unit_consumption, cpf, date_birth)
+    invoice_details = InvoiceExtractor()
 
-    def get_total_to_pay():
-        try:
-            total_to_pay = get_invoice_details
-            return total_to_pay
-        
-        except Exception as e:
-            print(f"Erro ao buscar o total a pagar: {e}")
-            return e
+    total_to_pay = invoice_details.get_total_to_pay()
+    month = invoice_details.get_reference_month()
+    holder = invoice_details.get_holder_name()
+    address = invoice_details.get_address()
 
-    total = get_total_to_pay()
-    print_invoice(total)
-
+    print_invoice(total_to_pay, month)
 
     print("Enviando fatura via WhatsApp...")
 
     contact_name = input('Digite o nome do contato: ')
-    send_invoice(contact_name, total)
+    send_invoice(contact_name, holder, address, unit_consumption, month, total_to_pay)
