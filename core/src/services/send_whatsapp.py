@@ -32,7 +32,12 @@ def send_invoice(contact_name, holder, address, consumer_unit, month, due_date, 
         contact_element.click()  
         print(f"Contato {contact_name} encontrado.")
 
-        messages = [f"Olá, *{contact_name}*!", f"A fatura de *{holder}* na *CELESC* está disponível", f"A cobrança é referente ao mês *{month}* no endereço *{address}*, unidade consumidora *{consumer_unit}*.", f"O total a pagar é *R${total_to_pay}*. O vencimento do boleto é em *{due_date}*." , f"Segue o código de barras para pagamento: {barcode}"]
+        messages = [
+            f"Olá, *{contact_name}*!", 
+            f"A fatura de *{holder}* na *CELESC* está disponível", 
+            f"A cobrança é referente ao mês *{month}* no endereço *{address}*, unidade consumidora *{consumer_unit}*.", 
+            f"O total a pagar é *R${total_to_pay}*. O vencimento do boleto é em *{due_date}*.", 
+            f"Segue o código de barras para pagamento: {barcode}"]
 
         message_box = WebDriverWait(driver, 30).until(
             EC.presence_of_element_located((By.XPATH, '//div[@contenteditable="true" and @data-tab="10"]')) # Local do input de mensagem 
