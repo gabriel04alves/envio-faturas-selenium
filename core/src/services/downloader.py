@@ -8,7 +8,13 @@ import requests
 
 class InvoiceDownloader:
     def __init__(self):
-        self.driver = create_driver()
+        self.driver = create_driver(
+            additional_options=[
+                "--no-sandbox",
+                "--disable-dev-shm-usage",
+                "--headless"
+            ]
+        )
 
     def get_invoice(self, unit_consumption, cpf, date_birth):
         try:

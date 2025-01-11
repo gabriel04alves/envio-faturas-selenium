@@ -5,19 +5,16 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 import time
 import os
+from services.web_driver import create_driver
 
 def send_invoice(contact_name, holder, address, consumer_unit, month, due_date, total_to_pay, barcode):
     profile_path = os.path.join(os.getcwd(), "chrome_profile")
-
-    # Configuração das opções do Chrome
-    options = webdriver.ChromeOptions()
-    options.add_argument("--no-sandbox")
-    options.add_argument("--disable-dev-shm-usage")
-
-    options.add_argument(f"user-data-dir={profile_path}") 
-    options.add_argument("--profile-directory=Default")
+    custom_options = [
+        f"user-data-dir={profile_path}",
+        "--profile-directory=Default"
+    ]
     
-    driver = webdriver.Chrome(options=options)
+    driver = create_driver(custom_options)
     driver.get("https://web.whatsapp.com/")
     
     print("Escaneie o QR code para fazer login...")
@@ -63,4 +60,4 @@ def send_invoice(contact_name, holder, address, consumer_unit, month, due_date, 
     
     finally:
         print("---------------------------------")
-        driver.quit()  
+        driver.quit()
