@@ -1,4 +1,4 @@
-# Faturas CELESC -> WhatsApp
+# Envio de Faturas - Python e Selenium
 
 ## Descrição
 
